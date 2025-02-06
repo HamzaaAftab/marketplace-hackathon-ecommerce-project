@@ -3,7 +3,7 @@
 import { useShoppingCart } from 'use-shopping-cart'
 import { Button } from "@/components/ui/button";
 import { useCartModal } from '../(contexts)/cart-model';
-
+import Link from 'next/link';
 
 export function CartSummary() {
   const { 
@@ -24,7 +24,7 @@ export function CartSummary() {
   })
 
   return (
-    <div className="border mt-12 md:mt-16 p-6 rounded-lg shadow-lg bg-white transition-all duration-300 hover:shadow-xl">
+    <div className="border mt-12 md:mt-12 p-6 rounded-lg shadow-lg bg-white transition-all duration-300 hover:shadow-xl">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">
         Your Cart ({safeCartCount} {safeCartCount === 1 ? 'item' : 'items'})
       </h2>
@@ -38,12 +38,14 @@ export function CartSummary() {
           </div>
 
           <div className="space-y-4">
+            <Link href={"/checkout"}>
             <Button 
               onClick={() => redirectToCheckout()}
               className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-6 text-lg font-bold hover:from-green-700 hover:to-green-800 transition-all"
             >
               Proceed to Checkout
             </Button>
+            </Link>
 
             <div className="flex justify-center">
               <Button

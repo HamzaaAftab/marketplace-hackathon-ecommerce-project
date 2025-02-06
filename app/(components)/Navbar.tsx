@@ -11,6 +11,7 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [prevScroll, setPrevScroll] = useState(0);
   const [visible, setVisible] = useState(true);
+  const [query, setQuery] = useState(""); // Added query state
   const { cartCount } = useShoppingCart();
 
   // Auto-hide Navbar on Scroll
@@ -43,17 +44,17 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto flex justify-between items-center md:px-12 px-4 py-4">
         {/* Brand Logo - Fixed responsive sizing */}
-        <motion.div 
+        <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
           className="flex-shrink-0 w-[120px] md:w-[140px]"
         >
           <Link href="/" className="block relative w-full h-[40px]">
-            <Image 
-              src="/logo.png" 
+            <Image
+              src="/logo.png"
               fill
-              alt="Logo" 
+              alt="Logo"
               className="hover:opacity-80 transition-opacity object-contain object-left"
               sizes="(max-width: 768px) 120px, 140px"
             />
@@ -71,8 +72,8 @@ export default function Navbar() {
               whileHover="hover"
               transition={{ duration: 0.3, type: "spring" }}
             >
-              <Link 
-                href={`/${item.toLowerCase()}`} 
+              <Link
+                href={`/${item.toLowerCase()}`}
                 className="text-md font-medium text-gray-700 hover:text-[#B88E2F] transition-colors"
               >
                 {item}
@@ -84,28 +85,28 @@ export default function Navbar() {
         {/* Right Section - Responsive layout */}
         <div className="flex items-center gap-4 md:gap-6 flex-shrink-0">
           {/* Search Bar - Hidden on mobile */}
-          <motion.div 
-            className="relative hidden md:block"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.input
-              type="text"
-              className={`rounded-full px-4 py-2 text-gray-700 bg-gray-50 focus:outline-none border transition-all duration-300 ${
-                searchOpen ? "w-64 border-[#B88E2F]" : "w-48 border-transparent"
-              }`}
-              placeholder="Search products"
-              onFocus={() => setSearchOpen(true)}
-              onBlur={() => setSearchOpen(false)}
-              whileFocus={{ scale: 1.05 }}
-            />
-            <motion.button 
-              className="absolute right-3 top-1/2 -translate-y-1/2"
-            >
-              <FiSearch size={19} className="text-gray-500 hover:text-[#B88E2F] transition-colors" />
-            </motion.button>
-          </motion.div>
+          <motion.div
+        className="relative hidden md:block"
+        initial={{ scale: 0.9 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        <motion.input
+          type="text"
+          className={`rounded-full px-4 py-2 text-gray-700 bg-gray-50 focus:outline-none border transition-all duration-300 ${
+            searchOpen ? "w-64 border-[#B88E2F]" : "w-48 border-transparent"
+          }`}
+          placeholder="Search products"
+          onFocus={() => setSearchOpen(true)} // When focus happens, expand search bar
+          onBlur={() => setSearchOpen(false)} // When focus leaves, collapse search bar
+          value={query} // Bind value to query
+          onChange={(e) => setQuery(e.target.value)} // Update query value on change
+        />
+        <motion.button className="absolute right-3 top-1/2 -translate-y-1/2">
+          <FiSearch size={19} className="text-gray-500 hover:text-[#B88E2F] transition-colors" />
+        </motion.button>
+      </motion.div>
+
 
           {/* Cart Icon - Always visible */}
           <motion.div

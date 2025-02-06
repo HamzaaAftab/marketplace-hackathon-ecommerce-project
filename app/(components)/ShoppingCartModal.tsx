@@ -1,6 +1,6 @@
 'use client';
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle} from "@/components/ui/sheet";
 import { useShoppingCart } from "use-shopping-cart";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,14 +8,11 @@ import { useCartModal } from "../(contexts)/cart-model";
 import Link from "next/link";
 
 const ShoppingCartModal = () => {
-  const { cartDetails, removeItem, totalPrice, clearCart } = useShoppingCart();
+  const { cartDetails, removeItem, totalPrice, clearCart, } = useShoppingCart();
   const { isOpen, onOpenChange } = useCartModal();
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetTrigger className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-        View Cart
-      </SheetTrigger>
       
       <SheetContent className="w-[400px]">
         <SheetHeader>
@@ -56,11 +53,15 @@ const ShoppingCartModal = () => {
         {totalPrice ? (
           <div className="mt-6">
             <p className="font-semibold text-lg">Total: ${totalPrice}</p>
-            <Link href={"/checkout"}>
-            <Button className="w-full mt-3 bg-green-600 hover:bg-green-700 transition">
-              Checkout
-            </Button>
-            </Link>
+            <Link href="/checkout">
+  <Button
+    className="w-full mt-3 bg-green-600 hover:bg-green-700 transition"
+    onClick={() => isOpen && onOpenChange(false)}
+  >
+    Checkout
+  </Button>
+</Link>
+
             <Button 
               variant="secondary" 
               className="w-full mt-2" 
