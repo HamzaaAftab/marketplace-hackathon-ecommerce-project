@@ -2,12 +2,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { client } from "@/sanity/lib/client";
-import { ChevronRight, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import Navbar from "@/app/(components)/Navbar";
 import FeaturesSection from "@/app/(components)/FeaturesSection";
 import Footer from "@/app/(components)/Footer";
+import AddToCartButton from "@/app/(components)/AddToCartButton";
 
 type Product = {
   _id: string;
@@ -55,18 +55,8 @@ const ProductPage = () => {
   return (
     <>
     <Navbar/>
-    <div className="min-h-screen bg-[#FFF9F3] px-4 py-5 sm:px-8 md:px-12 lg:px-16">
-      {/* Breadcrumb */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex items-center gap-2 text-sm">
-          <Link href="/" className="hover:text-[#B88E2F]">Home</Link>
-          <ChevronRight className="w-4 h-4" />
-          <Link href="/shop" className="hover:text-[#B88E2F]">Shop</Link>
-          <ChevronRight className="w-4 h-4" />
-          <span className="text-gray-500">{product.title}</span>
-        </div>
-      </div>
-
+    <div className="min-h-screen mt-8 bg-[#FFF9F3] px-4 py-5 sm:px-8 md:px-12 lg:px-16">
+    
       {/* Product Details */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 gap-12">
@@ -104,8 +94,8 @@ const ProductPage = () => {
 
           {/* Product Info */}
           <div className="space-y-8">
-            <h1 className="text-4xl font-medium">{product.title}</h1>
-            <div className="text-2xl text-gray-500">Rs. {product.price.toLocaleString()}</div>
+            <h1 className="text-4xl font-bold">{product.title}</h1>
+            <div className="text-2xl text-gray-500">USD: {product.price.toLocaleString()}</div>
 
             
 
@@ -134,9 +124,14 @@ const ProductPage = () => {
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
-              <button className="px-10 py-2 border border-black rounded hover:bg-black hover:text-white transition-colors">
-                Add To Cart
-              </button>
+              <AddToCartButton 
+  id={product._id}
+  name={product.title}
+  price={product.price}
+  image={product.images[0]}
+  description={product.description}
+  quantity={quantity}
+/>
               
             </div>
 

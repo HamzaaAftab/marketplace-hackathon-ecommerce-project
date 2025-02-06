@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import { FiShoppingCart, FiSearch, FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useShoppingCart } from "use-shopping-cart";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [prevScroll, setPrevScroll] = useState(0);
   const [visible, setVisible] = useState(true);
+  const { cartCount } = useShoppingCart();
 
   // Auto-hide Navbar on Scroll
   useEffect(() => {
@@ -39,26 +41,27 @@ export default function Navbar() {
         visible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
-      <div className="max-w-7xl mx-auto flex justify-between items-center md:px-12 px-6 py-4">
-        {/* Brand */}
+      <div className="max-w-7xl mx-auto flex justify-between items-center md:px-12 px-4 py-4">
+        {/* Brand Logo - Fixed responsive sizing */}
         <motion.div 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300 }}
+          className="flex-shrink-0 w-[120px] md:w-[140px]"
         >
-          <Link href="/">
+          <Link href="/" className="block relative w-full h-[40px]">
             <Image 
               src="/logo.png" 
-              width={140} 
-              height={400} 
+              fill
               alt="Logo" 
-              className="hover:opacity-80 transition-opacity md:w-[130px] "
+              className="hover:opacity-80 transition-opacity object-contain object-left"
+              sizes="(max-width: 768px) 120px, 140px"
             />
           </Link>
         </motion.div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8">
+        {/* Desktop Menu - Hidden on mobile */}
+        <div className="hidden md:flex space-x-8 flex-grow justify-center ml-4">
           {["Shop", "Blog", "Contact"].map((item, index) => (
             <motion.div
               key={index}
@@ -78,11 +81,11 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Right Section */}
-        <div className="flex items-center gap-6">
-          {/* Search */}
+        {/* Right Section - Responsive layout */}
+        <div className="flex items-center gap-4 md:gap-6 flex-shrink-0">
+          {/* Search Bar - Hidden on mobile */}
           <motion.div 
-            className="relative space-x-4 gap-12"
+            className="relative hidden md:block"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.3 }}
@@ -104,7 +107,7 @@ export default function Navbar() {
             </motion.button>
           </motion.div>
 
-          {/* Cart */}
+          {/* Cart Icon - Always visible */}
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -117,14 +120,14 @@ export default function Navbar() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className="absolute -top-2 -right-2 bg-[#B88E2F] text-white text-xs font-bold px-2 py-1 rounded-full"
+                className="absolute -top-2 -right-2 bg-[#B88E2F] text-white text-xs font-bold px-2 py-1 rounded-full min-w-[24px] text-center"
               >
-                3
+                {cartCount ?? 0}
               </motion.span>
             </Link>
           </motion.div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Visible only on mobile */}
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -139,7 +142,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Animated dropdown */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -147,10 +150,10 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, type: "spring" }}
-            className="absolute top-full left-0 w-full bg-white shadow-lg md:hidden"
+            className="absolute top-full left-0 w-full bg-white shadow-lg md:hidden z-50"
           >
             <div className="px-6 py-4 space-y-4">
-              {["Home", "About", "Shop", "Cart"].map((item, index) => (
+              {["Home", "Shop", "Blog", "Contact", "Cart"].map((item, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ x: 10 }}
@@ -165,6 +168,19 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
+              {/* Mobile Search - Visible only in mobile menu */}
+              <div className="pt-4 border-t border-gray-200">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search products"
+                    className="w-full rounded-full px-4 py-2 text-gray-700 bg-gray-50 focus:outline-none border border-gray-200"
+                  />
+                  <button className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <FiSearch size={19} className="text-gray-500 hover:text-[#B88E2F] transition-colors" />
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

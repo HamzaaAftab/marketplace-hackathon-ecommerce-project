@@ -37,7 +37,7 @@ const ShopProducts: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-16 bg-gray-100 md:mt-16 mt-8 ">
+    <section className="py-16 px-6 bg-gray-100 md:mt-16 mt-8 ">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-3xl font-semibold text-gray-900 mb-8 md:mb-16">All Products</h2>
 
